@@ -1,0 +1,50 @@
+﻿@model MVCTutorial.Models.EmployeeViewModel
+<div>
+
+    <form id="myForm1">
+
+
+        @Html.HiddenFor(x => x.EmployeeID)
+
+        @Html.DropDownListFor(model => model.DepartmentID, ViewBag.DepartmentList as SelectList, "--select--", new { @class = "form-control" })
+
+        @Html.TextBoxFor(model => model.Name, new { @class = "form-control", @placeholder = "Name" })
+
+        @Html.TextBoxFor(model => model.Address, new { @class = "form-control", @placeholder = "Address" })
+
+        <a href="#" id="btnSave" class="btn btn-block btn-primary">
+            @if (Model.EmployeeID > 0)
+            {
+                <span>Update</span>
+            }
+            else
+            {
+                <span>Save</span>
+            }
+        </a>
+
+    </form>
+    <div style="text-align:center;display:none;" id="loaderDiv1">
+        <img src="~/Content/126.gif" />
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#btnSave").click(function () {
+            $("#loaderDiv1").show();
+            var myformdata = $("#myForm1").serialize();
+                
+            $.ajax({
+                type: "POST",
+                url: "/Test/Index",
+                data: myformdata,
+                success: function () {
+                    $("#loaderDiv1").hide();
+                    $("#myModalpartialAddEdit").modal("hide");
+                    window.location.href = "/Test/Index";
+                    
+                    }
+                })
+        })
+    })
+</script>
